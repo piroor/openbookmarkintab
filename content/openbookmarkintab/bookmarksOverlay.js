@@ -14,7 +14,7 @@ var OpenBookmarksInNewTab = {
 			PlacesUIUtils._openTabset.toSource().replace(
 				'if (where == "window") {',
 				<![CDATA[
-					where = OpenBookmarksInNewTab.convertWhereToOpenLink(where);
+					where = OpenBookmarksInNewTab.convertWhereToOpenLink(where, aEvent);
 					$&
 				]]>
 			)
@@ -22,15 +22,31 @@ var OpenBookmarksInNewTab = {
 
 	},
 
-	convertWhereToOpenLink : function(aWhere)
+	convertWhereToOpenLink : function(aWhere, aEvent)
 	{
+		var isFiredOnFolderItem = (
+				aEvent &&
+				(
+					( // tree
+						aEvent.target.localName == 'treechildren' &&
+						aEvent.currentTarget.selectedNode &&
+						!PlacesUtils.nodeIsURI(aEvent.currentTarget.selectedNode) &&
+						PlacesUtils.nodeIsContainer(aEvent.currentTarget.selectedNode)
+					) ||
+					( // toolbar, menu
+						aEvent.originalTarget &&
+						aEvent.originalTarget.node &&
+						PlacesUtils.nodeIsContainer(aEvent.originalTarget.node)
+					)
+				)
+			);
 		switch (aWhere)
 		{
 			case 'current':
-				return 'tab';
+				return isFiredOnFolderItem ? aWhere : 'tab' ;
 			case 'tab':
 			case 'tabshifted':
-				return 'current';
+				return isFiredOnFolderItem ? aWhere : 'current' ;
 			default:
 				return aWhere;
 		}
