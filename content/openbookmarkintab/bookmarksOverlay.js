@@ -20,6 +20,8 @@ var OpenBookmarksInNewTab = {
 			)
 		);
 
+		document.getElementById('placesContext_open').removeAttribute('default');
+		document.getElementById('placesContext_open:newtab').setAttribute('default', true);
 	},
 
 	convertWhereToOpenLink : function(aWhere, aEvent)
