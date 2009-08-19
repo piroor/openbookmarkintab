@@ -48,7 +48,11 @@ var OpenBookmarksInNewTab = {
 				return isFiredOnFolderItem ? aWhere : 'tab' ;
 			case 'tab':
 			case 'tabshifted':
-				return isFiredOnFolderItem ? aWhere : 'current' ;
+				var shouldReverse = Components
+						.classes['@mozilla.org/preferences;1']
+						.getService(Components.interfaces.nsIPrefBranch)
+						.getBoolPref('extensions.openbookmarkintab.reverseBehaviorForMiddleClick');
+				return isFiredOnFolderItem || !shouldReverse ? aWhere : 'current' ;
 			default:
 				return aWhere;
 		}

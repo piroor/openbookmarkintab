@@ -1,0 +1,7 @@
+<!ENTITY config.title        "ブックマークを新しいタブで開く設定">
+
+<!ENTITY config.tabs.general "全般">
+
+<!ENTITY config.reverseBehaviorForMiddleClick.caption "ブックマークを中クリックした時の動作">
+<!ENTITY config.reverseBehaviorForMiddleClick.true    "現在のタブに読み込む">
+<!ENTITY config.reverseBehaviorForMiddleClick.false   "新しいタブで開く">

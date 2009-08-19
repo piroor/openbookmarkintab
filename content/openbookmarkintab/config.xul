@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/"?>
+<!DOCTYPE prefwindow [
+<!ENTITY % mainDTD SYSTEM "chrome://openbookmarkintab/locale/openbookmarkintab.dtd">
+%mainDTD;
+]>
+<prefwindow id="openbookmarkintab-config"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	title="&config.title;">
+
+<prefpane id="prefpane-general" label="&config.tabs.general;">
+	<preferences>
+		<preference id="extensions.openbookmarkintab.reverseBehaviorForMiddleClick"
+			name="extensions.openbookmarkintab.reverseBehaviorForMiddleClick"
+			type="bool"/>
+	</preferences>
+
+	<groupbox>
+		<caption label="&config.reverseBehaviorForMiddleClick.caption;"/>
+		<radiogroup id="extensions.openbookmarkintab.reverseBehaviorForMiddleClick-radiogroup"
+			preference="extensions.openbookmarkintab.reverseBehaviorForMiddleClick"
+			orient="vertical">
+			<radio value="false" label="&config.reverseBehaviorForMiddleClick.false;"/>
+			<radio value="true" label="&config.reverseBehaviorForMiddleClick.true;"/>
+		</radiogroup>
+	</groupbox>
+
+</prefpane>
+
+</prefwindow>
