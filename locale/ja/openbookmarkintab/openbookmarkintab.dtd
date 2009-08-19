@@ -1,7 +1,7 @@
-<!ENTITY config.title        "ƒuƒbƒNƒ}[ƒN‚ðV‚µ‚¢ƒ^ƒu‚ÅŠJ‚­Ý’è">
+<!ENTITY config.title        "ãƒ–ãƒƒã‚¯ãƒžãƒ¼ã‚¯ã‚’æ–°ã—ã„ã‚¿ãƒ–ã§é–‹ãè¨­å®š">
 
-<!ENTITY config.tabs.general "‘S”Ê">
+<!ENTITY config.tabs.general "å…¨èˆ¬">
 
-<!ENTITY config.reverseBehaviorForMiddleClick.caption "ƒuƒbƒNƒ}[ƒN‚ð’†ƒNƒŠƒbƒN‚µ‚½Žž‚Ì“®ì">
-<!ENTITY config.reverseBehaviorForMiddleClick.true    "Œ»Ý‚Ìƒ^ƒu‚É“Ç‚Ýž‚Þ">
-<!ENTITY config.reverseBehaviorForMiddleClick.false   "V‚µ‚¢ƒ^ƒu‚ÅŠJ‚­">
+<!ENTITY config.reverseBehaviorForMiddleClick.caption "ãƒ–ãƒƒã‚¯ãƒžãƒ¼ã‚¯ã‚’ä¸­ã‚¯ãƒªãƒƒã‚¯ã—ãŸæ™‚ã®å‹•ä½œ">
+<!ENTITY config.reverseBehaviorForMiddleClick.true    "ç¾åœ¨ã®ã‚¿ãƒ–ã«èª­ã¿è¾¼ã‚€">
+<!ENTITY config.reverseBehaviorForMiddleClick.false   "æ–°ã—ã„ã‚¿ãƒ–ã§é–‹ã">
