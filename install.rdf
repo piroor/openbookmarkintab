@@ -5,7 +5,7 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="openbookmarkintab@piro.sakura.ne.jp"
                    em:name="Open Bookmarks in New Tab"
-                   em:version="0.1"
+                   em:version="0.1.2009081901"
                    em:creator="SHIMODA Hiroshi"
                    em:description="Always opens new tab from bookmarks."
                    em:homepageURL="http://piro.sakura.ne.jp/xul/_openbookmarkintab.html.en">
