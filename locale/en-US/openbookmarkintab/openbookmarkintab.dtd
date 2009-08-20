@@ -2,6 +2,6 @@
 
 <!ENTITY config.tabs.general "General">
 
-<!ENTITY config.reverseBehaviorForMiddleClick.caption "Moddle-click on bookmarks:">
+<!ENTITY config.reverseBehaviorForMiddleClick.caption "Middle-click on bookmarks:">
 <!ENTITY config.reverseBehaviorForMiddleClick.true    "Load into the current tab">
 <!ENTITY config.reverseBehaviorForMiddleClick.false   "Open in a new tab">
