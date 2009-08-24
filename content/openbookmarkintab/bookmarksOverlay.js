@@ -5,8 +5,8 @@ var OpenBookmarksInNewTab = {
 
 		eval('PlacesUIUtils.openNodeWithEvent = '+
 			PlacesUIUtils.openNodeWithEvent.toSource().replace(
-				'whereToOpenLink(aEvent)',
-				'OpenBookmarksInNewTab.convertWhereToOpenLink($&, null, aNode)'
+				/([^\s]*whereToOpenLink\(aEvent\))/,
+				'OpenBookmarksInNewTab.convertWhereToOpenLink($1, null, aNode)'
 			)
 		);
 
