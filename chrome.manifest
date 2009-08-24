@@ -7,3 +7,4 @@ overlay	chrome://browser/content/places/places.xul	chrome://openbookmarkintab/co
 
 locale	openbookmarkintab	en-US	jar:chrome/openbookmarkintab.jar!/locale/en-US/openbookmarkintab/
 locale	openbookmarkintab	ja	jar:chrome/openbookmarkintab.jar!/locale/ja/openbookmarkintab/
+locale	openbookmarkintab	hu-HU	jar:chrome/openbookmarkintab.jar!/locale/hu-HU/openbookmarkintab/

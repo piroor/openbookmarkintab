@@ -1,0 +1,7 @@
+<!ENTITY config.title        "Open Bookmarks in New Tab - beállítások">
+
+<!ENTITY config.tabs.general "Általános">
+
+<!ENTITY config.reverseBehaviorForMiddleClick.caption "Kattintás az egér középső gombjával a könyvjelzőre művelete:">
+<!ENTITY config.reverseBehaviorForMiddleClick.true    "Megnyitás a jelenlegi lapon">
+<!ENTITY config.reverseBehaviorForMiddleClick.false   "Megnyitás új lapon">

@@ -10,6 +10,7 @@
                    em:description="Always opens new tab from bookmarks."
                    em:homepageURL="http://piro.sakura.ne.jp/xul/_openbookmarkintab.html.en"
                    em:optionsURL="chrome://openbookmarkintab/content/config.xul">
+        <em:translator>Mikes Kaszmán István (hu-HU locale)</em:translator>
 
 
     <em:updateURL>http://piro.sakura.ne.jp/xul/update.rdf</em:updateURL>
@@ -22,6 +23,7 @@
                        em:description="Always opens new tab from bookmarks."
                        em:homepageURL="http://piro.sakura.ne.jp/xul/_openbookmarkintab.html.en"
                        em:creator="SHIMODA Hiroshi">
+        <em:translator>Mikes Kaszmán István (hu-HU locale)</em:translator>
       </RDF:Description>
     </em:localized>
     <em:localized>
@@ -30,8 +32,20 @@
                        em:description="ブックマークを常に新しいタブで開くようにします。"
                        em:homepageURL="http://piro.sakura.ne.jp/xul/_openbookmarkintab.html"
                        em:creator="SHIMODA Hiroshi">
+        <em:translator>Mikes Kaszmán István (hu-HU locale)</em:translator>
       </RDF:Description>
     </em:localized>
+    <em:localized>
+      <RDF:Description em:locale="hu-HU"
+                       em:name="Open Bookmarks in New Tab"
+                       em:description="Könyvjelzők megnyitása mindig új lapon."
+                       em:homepageURL="http://piro.sakura.ne.jp/xul/_openbookmarkintab.html.en"
+                       em:creator="SHIMODA Hiroshi">
+        <em:translator>Mikes Kaszmán István (hu-HU locale)</em:translator>
+      </RDF:Description>
+    </em:localized>
+
+
 
 
     <em:targetApplication>
