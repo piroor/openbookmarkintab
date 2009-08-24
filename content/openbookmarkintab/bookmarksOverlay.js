@@ -6,7 +6,7 @@ var OpenBookmarksInNewTab = {
 		eval('PlacesUIUtils.openNodeWithEvent = '+
 			PlacesUIUtils.openNodeWithEvent.toSource().replace(
 				'whereToOpenLink(aEvent)',
-				'OpenBookmarksInNewTab.convertWhereToOpenLink($&)'
+				'OpenBookmarksInNewTab.convertWhereToOpenLink($&, null, aNode)'
 			)
 		);
 
@@ -24,7 +24,7 @@ var OpenBookmarksInNewTab = {
 		document.getElementById('placesContext_open:newtab').setAttribute('default', true);
 	},
 
-	convertWhereToOpenLink : function(aWhere, aEvent)
+	convertWhereToOpenLink : function(aWhere, aEvent, aNode)
 	{
 		if ( // clicking on folder
 				aEvent &&
@@ -41,6 +41,15 @@ var OpenBookmarksInNewTab = {
 						PlacesUtils.nodeIsContainer(aEvent.originalTarget.node)
 					)
 				)
+			)
+			return aWhere;
+
+		if (
+			aNode &&
+			PlacesUtils.nodeIsURI(aNode) &&
+			PlacesUIUtils.checkURLSecurity(aNode) &&
+			PlacesUtils.nodeIsBookmark(aNode) &&
+			aNode.uri.indexOf('javascript:') == 0
 			)
 			return aWhere;
 
