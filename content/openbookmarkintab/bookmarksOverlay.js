@@ -26,7 +26,7 @@ var OpenBookmarksInNewTab = {
 
 	convertWhereToOpenLink : function(aWhere, aEvent)
 	{
-		var isFiredOnFolderItem = (
+		if ( // clicking on folder
 				aEvent &&
 				(
 					( // tree
@@ -41,18 +41,20 @@ var OpenBookmarksInNewTab = {
 						PlacesUtils.nodeIsContainer(aEvent.originalTarget.node)
 					)
 				)
-			);
+			)
+			return aWhere;
+
 		switch (aWhere)
 		{
 			case 'current':
-				return isFiredOnFolderItem ? aWhere : 'tab' ;
+				return 'tab' ;
 			case 'tab':
 			case 'tabshifted':
 				var shouldReverse = Components
 						.classes['@mozilla.org/preferences;1']
 						.getService(Components.interfaces.nsIPrefBranch)
 						.getBoolPref('extensions.openbookmarkintab.reverseBehaviorForMiddleClick');
-				return isFiredOnFolderItem || !shouldReverse ? aWhere : 'current' ;
+				return !shouldReverse ? aWhere : 'current' ;
 			default:
 				return aWhere;
 		}
