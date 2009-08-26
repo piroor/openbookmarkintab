@@ -49,7 +49,19 @@ var OpenBookmarksInNewTab = {
 			PlacesUtils.nodeIsURI(aNode) &&
 			PlacesUIUtils.checkURLSecurity(aNode) &&
 			PlacesUtils.nodeIsBookmark(aNode) &&
-			aNode.uri.indexOf('javascript:') == 0
+			(
+				aNode.uri.indexOf('javascript:') == 0 || // bookmarklets
+				( // web panels
+					PlacesUtils.annotations.itemHasAnnotation(
+						aNode.itemId,
+						'bookmarkProperties/loadInSidebar'
+					) &&
+					Components
+						.classes['@mozilla.org/appshell/window-mediator;1']
+						.getService(Components.interfaces.nsIWindowMediator)
+						.getMostRecentWindow('navigator:browser')
+				)
+			)
 			)
 			return aWhere;
 
