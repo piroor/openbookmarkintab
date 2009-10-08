@@ -26,6 +26,10 @@ var OpenBookmarksInNewTab = {
 
 	convertWhereToOpenLink : function(aWhere, aEvent, aNode)
 	{
+		var pref = Components
+					.classes['@mozilla.org/preferences;1']
+					.getService(Components.interfaces.nsIPrefBranch);
+
 		if ( // clicking on folder
 				aEvent &&
 				(
@@ -65,17 +69,26 @@ var OpenBookmarksInNewTab = {
 			)
 			return aWhere;
 
+		var browserWindow = getTopWin();
+		if (
+			!browserWindow ||
+			(
+				pref.getBoolPref('extensions.openbookmarkintab.reuseBlankTab') &&
+				browserWindow.gBrowser.currentURI.spec == 'about:blank' &&
+				browserWindow.gBrowser.selectedTab.getAttribute('busy') != 'true'
+			)
+			)
+			return aWhere;
+
 		switch (aWhere)
 		{
 			case 'current':
 				return 'tab' ;
 			case 'tab':
 			case 'tabshifted':
-				var shouldReverse = Components
-						.classes['@mozilla.org/preferences;1']
-						.getService(Components.interfaces.nsIPrefBranch)
-						.getBoolPref('extensions.openbookmarkintab.reverseBehaviorForMiddleClick');
-				return !shouldReverse ? aWhere : 'current' ;
+				return !pref.getBoolPref('extensions.openbookmarkintab.reverseBehaviorForMiddleClick') ?
+						aWhere :
+						'current' ;
 			default:
 				return aWhere;
 		}
