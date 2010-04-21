@@ -1,24 +1,29 @@
 var OpenBookmarksInNewTab = {
 	init : function()
 	{
-		if (!('PlacesUIUtils' in window)) return;
+		if (!('PlacesUIUtils' in window))
+			return;
 
-		eval('PlacesUIUtils.openNodeWithEvent = '+
-			PlacesUIUtils.openNodeWithEvent.toSource().replace(
-				/([^\s]*whereToOpenLink\(aEvent\))/,
-				'OpenBookmarksInNewTab.convertWhereToOpenLink($1, null, aNode)'
-			)
-		);
+		if (!PlacesUIUtils.__openbookmarkintab__done) {
+			eval('PlacesUIUtils.openNodeWithEvent = '+
+				PlacesUIUtils.openNodeWithEvent.toSource().replace(
+					/(([^\s]*)whereToOpenLink\(aEvent\))/,
+					'$2OpenBookmarksInNewTab.convertWhereToOpenLink($1, null, aNode)'
+				)
+			);
 
-		eval('PlacesUIUtils._openTabset = '+
-			PlacesUIUtils._openTabset.toSource().replace(
-				'if (where == "window") {',
-				<![CDATA[
-					where = OpenBookmarksInNewTab.convertWhereToOpenLink(where, aEvent);
-					$&
-				]]>
-			)
-		);
+			eval('PlacesUIUtils._openTabset = '+
+				PlacesUIUtils._openTabset.toSource().replace(
+					'if (where == "window") {',
+					<![CDATA[
+						where = browserWindow.OpenBookmarksInNewTab.convertWhereToOpenLink(where, aEvent);
+						$&
+					]]>
+				)
+			);
+
+			PlacesUIUtils.__openbookmarkintab__done = true;
+		}
 
 		document.getElementById('placesContext_open').removeAttribute('default');
 		document.getElementById('placesContext_open:newtab').setAttribute('default', true);
