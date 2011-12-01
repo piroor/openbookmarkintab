@@ -47,11 +47,29 @@ var OpenBookmarksInNewTab = {
 			PlacesUIUtils.__openbookmarkintab__done = true;
 		}
 
+		if ('HistoryMenu' in window &&
+			HistoryMenu.prototype._onCommand) {
+			let source = HistoryMenu.prototype._onCommand.toSource();
+			if (source.indexOf('OpenBookmarksInNewTab') < 0) {
+				eval('HistoryMenu.prototype._onCommand = '+source.replace(
+					/openUILink\(/g,
+					'OpenBookmarksInNewTab.openUILink('
+				));
+			}
+		}
+
 		document.getElementById('placesContext_open').removeAttribute('default');
 		document.getElementById('placesContext_open:newtab').setAttribute('default', true);
 	},
 
-	convertWhereToOpenLink : function(aWhere, aEvent, aNode)
+	openUILink : function(aURI, aEvent, aIgnoreButton, aIgnoreAlt, aAllowKeywordFixup, aPostData, aReferrer)
+	{
+		var where = whereToOpenLink(aEvent, aIgnoreButton, aIgnoreAlt);
+		where = this.convertWhereToOpenLink(where, aEvent, null, aURI);
+		return openUILinkIn(aURI, where, aAllowKeywordFixup, aPostData, aReferrer);
+	},
+
+	convertWhereToOpenLink : function(aWhere, aEvent, aNode, aURI)
 	{
 		var pref = Components
 					.classes['@mozilla.org/preferences;1']
@@ -75,23 +93,26 @@ var OpenBookmarksInNewTab = {
 			)
 			return aWhere;
 
+		var uri = aURI ? aURI :
+					aNode ? (aNode.uri || ''):
+					'';
+		if (uri.indexOf('javascript:') == 0) // bookmarklets
+			return aWhere;
+
 		if (
 			aNode &&
 			PlacesUtils.nodeIsURI(aNode) &&
 			PlacesUIUtils.checkURLSecurity(aNode) &&
 			PlacesUtils.nodeIsBookmark(aNode) &&
-			(
-				aNode.uri.indexOf('javascript:') == 0 || // bookmarklets
-				( // web panels
-					PlacesUtils.annotations.itemHasAnnotation(
-						aNode.itemId,
-						'bookmarkProperties/loadInSidebar'
-					) &&
-					Components
-						.classes['@mozilla.org/appshell/window-mediator;1']
-						.getService(Components.interfaces.nsIWindowMediator)
-						.getMostRecentWindow('navigator:browser')
-				)
+			( // web panels
+				PlacesUtils.annotations.itemHasAnnotation(
+					aNode.itemId,
+					'bookmarkProperties/loadInSidebar'
+				) &&
+				Components
+					.classes['@mozilla.org/appshell/window-mediator;1']
+					.getService(Components.interfaces.nsIWindowMediator)
+					.getMostRecentWindow('navigator:browser')
 			)
 			)
 			return aWhere;
