@@ -1,4 +1,26 @@
 var OpenBookmarksInNewTab = {
+	kPLACE_CURRENT    : 0,
+	kPLACE_NEW_TAB    : 1,
+	kPLACE_NEW_WINDOW : 2,
+	kPLACE_IN_BACKGROUND : 256,
+	get place()
+	{
+		var pref = Components
+					.classes['@mozilla.org/preferences;1']
+					.getService(Components.interfaces.nsIPrefBranch);
+		var place = pref.getIntPref('extensions.openbookmarkintab.place');
+
+		if (place & this.kPLACE_NEW_TAB) {
+			return place & this.kPLACE_IN_BACKGROUND ? 'tabshifted' : 'tab' ;
+		}
+
+		if (place & this.kPLACE_NEW_WINDOW) {
+			return 'window';
+		}
+
+		return 'current';
+	},
+
 	init : function()
 	{
 		if (!('PlacesUIUtils' in window))
@@ -88,7 +110,7 @@ var OpenBookmarksInNewTab = {
 		switch (aWhere)
 		{
 			case 'current':
-				return 'tab' ;
+				return this.place;
 			case 'tab':
 			case 'tabshifted':
 				return !pref.getBoolPref('extensions.openbookmarkintab.reverseBehaviorForMiddleClick') ?
