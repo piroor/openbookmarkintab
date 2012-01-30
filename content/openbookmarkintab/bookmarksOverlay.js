@@ -118,11 +118,12 @@ var OpenBookmarksInNewTab = {
 			return aWhere;
 
 		var browserWindow = getTopWin();
+		var currentURI = browserWindow && browserWindow.gBrowser.currentURI.spec;
 		if (
 			!browserWindow ||
 			(
 				pref.getBoolPref('extensions.openbookmarkintab.reuseBlankTab') &&
-				browserWindow.gBrowser.currentURI.spec == 'about:blank' &&
+				(browserWindow.isBlankPageURL ? browserWindow.isBlankPageURL(currentURI) : (currentURI == 'about:blank')) &&
 				browserWindow.gBrowser.selectedTab.getAttribute('busy') != 'true'
 			)
 			)
