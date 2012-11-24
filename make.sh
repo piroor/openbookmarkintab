@@ -3,6 +3,6 @@
 appname=openbookmarkintab
 
 cp buildscript/makexpi.sh ./
-./makexpi.sh $appname version=0
+./makexpi.sh -n $appname
 rm ./makexpi.sh
 

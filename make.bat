@@ -1,3 +1,3 @@
 copy buildscript\makexpi.sh .\
-bash makexpi.sh openbookmarkintab version=0
+bash makexpi.sh -n openbookmarkintab
 del makexpi.sh
