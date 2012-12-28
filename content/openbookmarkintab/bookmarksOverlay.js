@@ -29,18 +29,16 @@ var OpenBookmarksInNewTab = {
 		if (!PlacesUIUtils.__openbookmarkintab__done) {
 			eval('PlacesUIUtils.openNodeWithEvent = '+
 				PlacesUIUtils.openNodeWithEvent.toSource().replace(
-					/(([^\s]*)whereToOpenLink\(aEvent\))/,
-					'$2OpenBookmarksInNewTab.convertWhereToOpenLink($1, null, aNode)'
+					/(([^\s]*)(window\.)whereToOpenLink\(aEvent[^\)]*\))/,
+					'$2$3OpenBookmarksInNewTab.convertWhereToOpenLink($1, null, aNode)'
 				)
 			);
 
 			eval('PlacesUIUtils._openTabset = '+
 				PlacesUIUtils._openTabset.toSource().replace(
 					'if (where == "window") {',
-					<![CDATA[
-						where = browserWindow.OpenBookmarksInNewTab.convertWhereToOpenLink(where, aEvent);
-						$&
-					]]>
+					'where = browserWindow.OpenBookmarksInNewTab.convertWhereToOpenLink(where, aEvent);\n' +
+					'$&'
 				)
 			);
 
