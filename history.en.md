@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+ - 1.0.2016012102
+   * Open tabs from middle click of a bookmark folder correctly. (regression)
  - 1.0.2016012101
    * Verified on Nightly 46.0a1.
    * Drop support for Firefox 37 and older.
