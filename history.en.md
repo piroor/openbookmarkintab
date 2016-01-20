@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+   * Works correctly even after the initial browser window is closed.
+   * Opens new tab from "History" panel UI popup also.
    * Modified: "jar" archive is no longer included.
  - 0.1.2012122901
    * Works on Nightly 20.0a1.
