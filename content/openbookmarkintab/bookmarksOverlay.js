@@ -41,6 +41,18 @@ var OpenBookmarksInNewTab = {
 		return this.utils = OpenBookmarksInNewTabUtils;
 	},
 
+	get CustomizableUI()
+	{
+		delete this.CustomizableUI;
+		var { CustomizableUI } = Components.utils.import('resource:///modules/CustomizableWidgets.jsm', {});
+		return this.CustomizableUI = CustomizableUI;
+	},
+
+	get panelUIHistoryItems()
+	{
+		return document.getElementById('PanelUI-historyItems');
+	},
+
 	init : function()
 	{
 		if (!('PlacesUIUtils' in window))
@@ -58,6 +70,8 @@ var OpenBookmarksInNewTab = {
 				));
 			}
 		}
+
+		this.panelUIHistoryItems.addEventListener('click', this, true);
 	},
 
 	openUILink : function(aURI, aEvent, aIgnoreButton, aIgnoreAlt, aAllowKeywordFixup, aPostData, aReferrer)
@@ -73,8 +87,25 @@ var OpenBookmarksInNewTab = {
 		{
 			case 'load':
 				window.removeEventListener('load', this, false);
+				window.addEventListener('unload', this, false);
 				this.init();
 				return;
+
+			case 'unload':
+				window.removeEventListener('unload', this, false);
+				this.panelUIHistoryItems.removeEventListener('click', this, true);
+				return;
+
+			case 'click':
+				var item = aEvent.target;
+				var uri = item.getAttribute('targetURI');
+				if (!uri)
+					return true;
+				this.openUILink(uri, aEvent);
+				this.CustomizableUI.hidePanelForNode(item);
+				aEvent.stopPropagation();
+				aEvent.preventDefault();
+				return false;
 		}
 	}
 };
