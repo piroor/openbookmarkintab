@@ -10,7 +10,8 @@
                    em:description="Always opens new tab from bookmarks."
                    em:homepageURL="http://piro.sakura.ne.jp/xul/_openbookmarkintab.html.en"
                    em:optionsURL="chrome://openbookmarkintab/content/config.xul"
-                   em:type="2">
+                   em:type="2"
+                   em:multiprocessCompatible="true">
         <em:translator>Mikes Kaszmán István (hu-HU)</em:translator>
 
 
@@ -51,8 +52,8 @@
 
     <em:targetApplication>
       <RDF:Description em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
-                       em:minVersion="3.0"
-                       em:maxVersion="20.0a1" />
+                       em:minVersion="38.0"
+                       em:maxVersion="46.0a1" />
     </em:targetApplication>
   </RDF:Description>
 </RDF:RDF>
