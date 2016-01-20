@@ -74,11 +74,11 @@ var OpenBookmarksInNewTab = {
 		this.panelUIHistoryItems.addEventListener('click', this, true);
 	},
 
-	openUILink : function(aURI, aEvent, aIgnoreButton, aIgnoreAlt, aAllowKeywordFixup, aPostData, aReferrer)
+	openUILink : function(aURI, aEvent, aParams)
 	{
-		var where = whereToOpenLink(aEvent, aIgnoreButton, aIgnoreAlt);
+		var where = whereToOpenLink(aEvent, aParams.ignoreButton, aParams.ignoreAlt);
 		where = this.utils.convertWhereToOpenLink(window, where, aEvent, null, aURI);
-		return openUILinkIn(aURI, where, aAllowKeywordFixup, aPostData, aReferrer);
+		return openUILinkIn(aURI, where, aParams);
 	},
 
 	handleEvent : function(aEvent)
