@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+   * Verified on Nightly 46.0a1.
+   * Drop support for Firefox 37 and older.
    * Works correctly even after the initial browser window is closed.
    * Opens new tab from "History" panel UI popup also.
    * Modified: "jar" archive is no longer included.
