@@ -70,6 +70,7 @@ var OpenBookmarksInNewTabUtils = {
 		PlacesUIUtils.__openbookmarkintab__openNodeWithEvent = PlacesUIUtils.openNodeWithEvent;
 		PlacesUIUtils.openNodeWithEvent = function(aNode, aEvent, aView, ...aArgs) {
 			var wrappedEvent = OpenBookmarksInNewTabUtils.wrapAsNewTabAction(aEvent, {
+					uri       : aNode.uri,
 					ignoreAlt : true
 				});
 			aEvent = wrappedEvent || aEvent;
