@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+ - 2.0.2016012101
+   * Isolated from `eval` hack.
  - 1.0.2016012102
    * Open tabs from middle click of a bookmark folder correctly. (regression)
  - 1.0.2016012101
