@@ -62,13 +62,18 @@ var OpenBookmarksInNewTab = {
 
 		if ('HistoryMenu' in window &&
 			HistoryMenu.prototype._onCommand) {
-			let source = HistoryMenu.prototype._onCommand.toSource();
-			if (source.indexOf('OpenBookmarksInNewTab') < 0) {
-				eval('HistoryMenu.prototype._onCommand = '+source.replace(
-					/openUILink\(/g,
-					'OpenBookmarksInNewTab.openUILink('
-				));
-			}
+			HistoryMenu.prototype.__openbookmarkintab__onCommand = HistoryMenu.prototype._onCommand;
+			HistoryMenu.prototype._onCommand = function(aEvent, ...aArgs) {
+				var placesNode = aEvent.target._placesNode;
+				if (placesNode) {
+					let wrappedEvent = OpenBookmarksInNewTab.utils.wrapAsNewTabAction(aEvent, {
+							uri       : placesNode.uri,
+							ignoreAlt : true
+						});
+					aEvent = wrappedEvent || aEvent;
+				}
+				HistoryMenu.prototype.__openbookmarkintab__onCommand.apply(this, [aEvent].concat(aArgs));
+			};
 		}
 
 		this.panelUIHistoryItems.addEventListener('click', this, true);

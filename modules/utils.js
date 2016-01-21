@@ -90,8 +90,39 @@ var OpenBookmarksInNewTabUtils = {
 
 	initWindow : function(aWindow)
 	{
-		aWindow.document.getElementById('placesContext_open').removeAttribute('default');
-		aWindow.document.getElementById('placesContext_open:newtab').setAttribute('default', true);
+		var d = aWindow.document;
+		d.getElementById('placesContext_open').removeAttribute('default');
+		d.getElementById('placesContext_open:newtab').setAttribute('default', true);
+	},
+
+	isMac : Cc['@mozilla.org/xre/app-info;1'].getService(Ci.nsIXULAppInfo).QueryInterface(Ci.nsIXULRuntime).OS == 'Darwin',
+
+	wrapAsNewTabAction : function(aOriginalEvent, aParams)
+	{
+		var placesNode = aOriginalEvent.target._placesNode;
+		var uri = placesNode && placesNode.uri;
+		var window = aOriginalEvent.target.ownerDocument.defaultView;
+		var where = window.whereToOpenLink(aOriginalEvent, false, true);
+		var node = null;
+		var updatedWhere = this.convertWhereToOpenLink(window, where, aOriginalEvent, node, uri);
+		if (where === updatedWhere)
+			return null;
+
+		var ctrlKey = !this.isMac;
+		var metaKey = this.isMac;
+		return new Proxy(aOriginalEvent, {
+			get: function(aTarget, aName) {
+				switch (aName)
+				{
+					case 'ctrlKey':
+						return ctrlKey;
+					case 'metaKey':
+						return metaKey;
+					default:
+						return aTarget[aName];
+				}
+			}
+		});
 	},
 
 	convertWhereToOpenLink : function(aWindow, aWhere, aEvent, aNode, aURI)
