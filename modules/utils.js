@@ -65,6 +65,13 @@ var OpenBookmarksInNewTabUtils = {
 		return 'current';
 	},
 
+	get CustomizableUI()
+	{
+		delete this.CustomizableUI;
+		var { CustomizableUI } = Components.utils.import('resource:///modules/CustomizableWidgets.jsm', {});
+		return this.CustomizableUI = CustomizableUI;
+	},
+
 	init : function()
 	{
 		PlacesUIUtils.__openbookmarkintab__openNodeWithEvent = PlacesUIUtils.openNodeWithEvent;
@@ -87,11 +94,34 @@ var OpenBookmarksInNewTabUtils = {
 		};
 	},
 
-	initWindow : function(aWindow)
+	updateWindow : function(aWindow)
 	{
 		var d = aWindow.document;
 		d.getElementById('placesContext_open').removeAttribute('default');
 		d.getElementById('placesContext_open:newtab').setAttribute('default', true);
+
+		if ('HistoryMenu' in aWindow &&
+			aWindow.HistoryMenu.prototype._onCommand) {
+			aWindow.HistoryMenu.prototype.__openbookmarkintab__onCommand = aWindow.HistoryMenu.prototype._onCommand;
+			aWindow.HistoryMenu.prototype._onCommand = function(aEvent, ...aArgs) {
+				var placesNode = aEvent.target._placesNode;
+				if (placesNode) {
+					let wrappedEvent = OpenBookmarksInNewTabUtils.wrapAsNewTabAction(aEvent, {
+							uri       : placesNode.uri,
+							ignoreAlt : true
+						});
+					aEvent = wrappedEvent || aEvent;
+				}
+				aWindow.HistoryMenu.prototype.__openbookmarkintab__onCommand.apply(this, [aEvent].concat(aArgs));
+			};
+		}
+
+		this.getPanelUIHistoryItems(aWindow).addEventListener('click', this, true);
+		aWindow.addEventListener('unload', this, false);
+	},
+	getPanelUIHistoryItems : function(aWindow)
+	{
+		return aWindow.document.getElementById('PanelUI-historyItems');
 	},
 
 	isMac : Cc['@mozilla.org/xre/app-info;1'].getService(Ci.nsIXULAppInfo).QueryInterface(Ci.nsIXULRuntime).OS == 'Darwin',
@@ -191,6 +221,37 @@ var OpenBookmarksInNewTabUtils = {
 						'current' ;
 			default:
 				return aWhere;
+		}
+	},
+
+	openUILink : function(aWindow, aURI, aEvent, aParams)
+	{
+		aParams = aParams || {};
+		var where = aWindow.whereToOpenLink(aEvent, aParams.ignoreButton, aParams.ignoreAlt);
+		where = this.convertWhereToOpenLink(aWindow, where, aEvent, null, aURI);
+		return aWindow.openUILinkIn(aURI, where, aParams);
+	},
+
+	handleEvent : function(aEvent)
+	{
+		switch (aEvent.type)
+		{
+			case 'unload':
+				aEvent.currentTarget.removeEventListener('unload', this, false);
+				this.getPanelUIHistoryItems(aEvent.currentTarget).removeEventListener('click', this, true);
+				return;
+
+			case 'click':
+				var item = aEvent.target;
+				var window = item.ownerDocument.defaultView;
+				var uri = item.getAttribute('targetURI');
+				if (!uri)
+					return true;
+				this.openUILink(window, uri, aEvent);
+				this.CustomizableUI.hidePanelForNode(item);
+				aEvent.stopPropagation();
+				aEvent.preventDefault();
+				return false;
 		}
 	}
 };

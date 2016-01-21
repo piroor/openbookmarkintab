@@ -33,87 +33,11 @@
  *
  * ***** END LICENSE BLOCK ******/
 
-var OpenBookmarksInNewTab = {
-	get utils()
-	{
-		delete this.utils;
-		var { OpenBookmarksInNewTabUtils } = Components.utils.import('resource://openbookmarkintab-modules/utils.js', {});
-		return this.utils = OpenBookmarksInNewTabUtils;
-	},
+window.addEventListener('load', function OpenBookmarksInNewTab_onload(aEvent) {
+	if (!('PlacesUIUtils' in window))
+		return;
 
-	get CustomizableUI()
-	{
-		delete this.CustomizableUI;
-		var { CustomizableUI } = Components.utils.import('resource:///modules/CustomizableWidgets.jsm', {});
-		return this.CustomizableUI = CustomizableUI;
-	},
-
-	get panelUIHistoryItems()
-	{
-		return document.getElementById('PanelUI-historyItems');
-	},
-
-	init : function()
-	{
-		if (!('PlacesUIUtils' in window))
-			return;
-
-		this.utils.initWindow(window);
-
-		if ('HistoryMenu' in window &&
-			HistoryMenu.prototype._onCommand) {
-			HistoryMenu.prototype.__openbookmarkintab__onCommand = HistoryMenu.prototype._onCommand;
-			HistoryMenu.prototype._onCommand = function(aEvent, ...aArgs) {
-				var placesNode = aEvent.target._placesNode;
-				if (placesNode) {
-					let wrappedEvent = OpenBookmarksInNewTab.utils.wrapAsNewTabAction(aEvent, {
-							uri       : placesNode.uri,
-							ignoreAlt : true
-						});
-					aEvent = wrappedEvent || aEvent;
-				}
-				HistoryMenu.prototype.__openbookmarkintab__onCommand.apply(this, [aEvent].concat(aArgs));
-			};
-		}
-
-		this.panelUIHistoryItems.addEventListener('click', this, true);
-	},
-
-	openUILink : function(aURI, aEvent, aParams)
-	{
-		aParams = aParams || {};
-		var where = whereToOpenLink(aEvent, aParams.ignoreButton, aParams.ignoreAlt);
-		where = this.utils.convertWhereToOpenLink(window, where, aEvent, null, aURI);
-		return openUILinkIn(aURI, where, aParams);
-	},
-
-	handleEvent : function(aEvent)
-	{
-		switch (aEvent.type)
-		{
-			case 'load':
-				window.removeEventListener('load', this, false);
-				window.addEventListener('unload', this, false);
-				this.init();
-				return;
-
-			case 'unload':
-				window.removeEventListener('unload', this, false);
-				this.panelUIHistoryItems.removeEventListener('click', this, true);
-				return;
-
-			case 'click':
-				var item = aEvent.target;
-				var uri = item.getAttribute('targetURI');
-				if (!uri)
-					return true;
-				this.openUILink(uri, aEvent);
-				this.CustomizableUI.hidePanelForNode(item);
-				aEvent.stopPropagation();
-				aEvent.preventDefault();
-				return false;
-		}
-	}
-};
-
-window.addEventListener('load', OpenBookmarksInNewTab, false);
+	window.removeEventListener('load', OpenBookmarksInNewTab_onload, false);
+	var { OpenBookmarksInNewTabUtils } = Components.utils.import('resource://openbookmarkintab-modules/utils.js', {});
+	OpenBookmarksInNewTabUtils.updateWindow(window);
+}, false);
