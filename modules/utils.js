@@ -145,7 +145,10 @@ var OpenBookmarksInNewTabUtils = {
 					case 'metaKey':
 						return metaKey;
 					default:
-						return aTarget[aName];
+						var object = aTarget[aName];
+						if (typeof object == 'function')
+							return object.bind(aTarget);
+						return object;
 				}
 			}
 		});
