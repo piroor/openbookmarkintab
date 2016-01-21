@@ -45,9 +45,6 @@ Cu.import('resource://gre/modules/Services.jsm');
 XPCOMUtils.defineLazyModuleGetter(this, 'PlacesUIUtils', 'resource:///modules/PlacesUIUtils.jsm');
 XPCOMUtils.defineLazyModuleGetter(this, 'PlacesUtils', 'resource://gre/modules/PlacesUtils.jsm');
 
-// required for PlacesUIUtils._openTabset
-XPCOMUtils.defineLazyModuleGetter(this, 'PrivateBrowsingUtils', 'resource://gre/modules/PrivateBrowsingUtils.jsm');
-
 var OpenBookmarksInNewTabUtils = {
 	kPLACE_CURRENT    : 0,
 	kPLACE_NEW_TAB    : 1,
