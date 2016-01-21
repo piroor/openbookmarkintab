@@ -1,6 +1,8 @@
 # 更新履歴
 
  - master/HEAD
+ - 2.0.2016012102
+   * Made implementation more safer for Firefox 38.
  - 2.0.2016012101
    * `eval`による関数の書き換えを行わない実装に変更した
  - 1.0.2016012102
