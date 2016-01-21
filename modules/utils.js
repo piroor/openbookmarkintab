@@ -70,22 +70,23 @@ var OpenBookmarksInNewTabUtils = {
 
 	init : function()
 	{
-		PlacesUIUtils.OpenBookmarksInNewTabUtils = this;
+		PlacesUIUtils.__openbookmarkintab__openNodeWithEvent = PlacesUIUtils.openNodeWithEvent;
+		PlacesUIUtils.openNodeWithEvent = function(aNode, aEvent, aView, ...aArgs) {
+			var wrappedEvent = OpenBookmarksInNewTabUtils.wrapAsNewTabAction(aEvent, {
+					ignoreAlt : true
+				});
+			aEvent = wrappedEvent || aEvent;
+			return PlacesUIUtils.__openbookmarkintab__openNodeWithEvent.apply(this, [aNode, aEvent, aView].concat(aArgs));
+		};
 
-		eval('PlacesUIUtils.openNodeWithEvent = '+
-			PlacesUIUtils.openNodeWithEvent.toSource().replace(
-				/(([^\s]*)(?:window\.)whereToOpenLink\(aEvent[^\)]*\))/,
-				'$2this.OpenBookmarksInNewTabUtils.convertWhereToOpenLink(window, $1, null, aNode)'
-			)
-		);
-
-		eval('PlacesUIUtils._openTabset = '+
-			PlacesUIUtils._openTabset.toSource().replace(
-				'if (where == "window") {',
-				'where = browserWindow ? this.OpenBookmarksInNewTabUtils.convertWhereToOpenLink(browserWindow, where, aEvent) : where ;\n' +
-				'$&'
-			)
-		);
+		PlacesUIUtils.__openbookmarkintab__openTabset = PlacesUIUtils._openTabset;
+		PlacesUIUtils._openTabset = function(aItemsToOpen, aEvent, aWindow, ...aArgs) {
+			var wrappedEvent = OpenBookmarksInNewTabUtils.wrapAsNewTabAction(aEvent, {
+					ignoreAlt : true
+				});
+			aEvent = wrappedEvent || aEvent;
+			return PlacesUIUtils.__openbookmarkintab__openTabset.apply(this, [aItemsToOpen, aEvent, aWindow].concat(aArgs));
+		};
 	},
 
 	initWindow : function(aWindow)
@@ -99,12 +100,9 @@ var OpenBookmarksInNewTabUtils = {
 
 	wrapAsNewTabAction : function(aOriginalEvent, aParams)
 	{
-		var placesNode = aOriginalEvent.target._placesNode;
-		var uri = placesNode && placesNode.uri;
 		var window = aOriginalEvent.target.ownerDocument.defaultView;
 		var where = window.whereToOpenLink(aOriginalEvent, false, true);
-		var node = null;
-		var updatedWhere = this.convertWhereToOpenLink(window, where, aOriginalEvent, node, uri);
+		var updatedWhere = this.convertWhereToOpenLink(window, where, aOriginalEvent, aParams.node, aParams.uri);
 		if (where === updatedWhere)
 			return null;
 
