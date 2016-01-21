@@ -81,6 +81,7 @@ var OpenBookmarksInNewTab = {
 
 	openUILink : function(aURI, aEvent, aParams)
 	{
+		aParams = aParams || {};
 		var where = whereToOpenLink(aEvent, aParams.ignoreButton, aParams.ignoreAlt);
 		where = this.utils.convertWhereToOpenLink(window, where, aEvent, null, aURI);
 		return openUILinkIn(aURI, where, aParams);
