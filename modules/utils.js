@@ -136,12 +136,12 @@ var OpenBookmarksInNewTabUtils = {
 			return null;
 
 		try {
-		// bookmark item with "load in sidebar"
-		if (where === 'current' &&
-			aParams.placeNode &&
-			PlacesUtils.annotations.itemHasAnnotation(aParams.placeNode.itemId, 'bookmarkProperties/loadInSidebar') &&
-			PlacesUIUtils._getTopBrowserWin())
-			return null;
+			// bookmark item with "load in sidebar"
+			if (where === 'current' &&
+				aParams.placeNode &&
+				PlacesUtils.annotations.itemHasAnnotation(aParams.placeNode.itemId, 'bookmarkProperties/loadInSidebar') &&
+				PlacesUIUtils._getTopBrowserWin())
+				return null;
 		}
 		catch(e) {
 			// failed for regular bookmarks on Firefox 38.
