@@ -78,7 +78,8 @@ var OpenBookmarksInNewTabUtils = {
 		PlacesUIUtils.openNodeWithEvent = function(aNode, aEvent, aView, ...aArgs) {
 			var wrappedEvent = OpenBookmarksInNewTabUtils.wrapAsNewTabAction(aEvent, {
 					uri       : aNode.uri,
-					ignoreAlt : true
+					ignoreAlt : true,
+					placeNode : aNode
 				});
 			aEvent = wrappedEvent || aEvent;
 			return PlacesUIUtils.__openbookmarkintab__openNodeWithEvent.apply(this, [aNode, aEvent, aView].concat(aArgs));
@@ -132,6 +133,13 @@ var OpenBookmarksInNewTabUtils = {
 		var where = window.whereToOpenLink(aOriginalEvent, false, true);
 		var updatedWhere = this.convertWhereToOpenLink(window, where, aOriginalEvent, aParams.node, aParams.uri);
 		if (where === updatedWhere)
+			return null;
+
+		// bookmark item with "load in sidebar"
+		if (where === 'current' &&
+			aParams.placeNode &&
+			PlacesUtils.annotations.itemHasAnnotation(aParams.placeNode.itemId, 'bookmarkProperties/loadInSidebar') &&
+			PlacesUIUtils._getTopBrowserWin())
 			return null;
 
 		var ctrlKey = !this.isMac;
