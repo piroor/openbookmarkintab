@@ -1,6 +1,8 @@
 # History
 
  - master/HEAD
+ - 2.0.2016021001
+   * Open "Load this bookmark in the sidebar" checked bookmarks correctly.
  - 2.0.2016012102
    * Made implementation more safer for Firefox 38.
  - 2.0.2016012101
